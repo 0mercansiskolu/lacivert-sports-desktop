@@ -95,6 +95,10 @@ $('#refreshBtn').onclick = () => {
   frame.src = frame.src; showToast('Yayın yenilendi');
 };
 $('#fullscreenBtn').onclick = () => window.desktopAPI.toggleFullscreen();
+$('#siteBroadcastsBtn').onclick = async () => {
+  await window.desktopAPI.openSite();
+  showToast('Site yayınları ayrı pencerede açıldı');
+};
 $('#minBtn').onclick = () => window.desktopAPI.minimize();
 $('#maxBtn').onclick = () => window.desktopAPI.maximize();
 $('#closeBtn').onclick = () => window.desktopAPI.close();
