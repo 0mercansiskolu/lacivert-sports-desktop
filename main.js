@@ -2,7 +2,6 @@ const { app, BrowserWindow, ipcMain, Menu, Tray, nativeImage, shell, session } =
 const path = require('path');
 
 let mainWindow;
-let siteWindow;
 let tray;
 let isQuitting = false;
 
@@ -25,10 +24,9 @@ function createWindow() {
     minHeight: 650,
     backgroundColor: '#050816',
     title: 'Lacivert Sports',
-    frame: false,
+    frame: true,
     show: false,
     webPreferences: {
-      preload: path.join(__dirname, 'preload.js'),
       contextIsolation: true,
       nodeIntegration: false,
       sandbox: true,
@@ -37,7 +35,7 @@ function createWindow() {
     }
   });
 
-  mainWindow.loadFile(path.join(__dirname, 'src', 'index.html'));
+  mainWindow.loadURL('https://larcivertsports2.blogspot.com/');
   mainWindow.once('ready-to-show', () => mainWindow.show());
 
   mainWindow.on('maximize', sendWindowState);
@@ -56,13 +54,13 @@ function createWindow() {
   mainWindow.webContents.setWindowOpenHandler(({ url }) => {
     try {
       const parsed = new URL(url);
+      if (parsed.hostname === 'larcivertsports2.blogspot.com') {
+        mainWindow.loadURL(url);
+        return { action: 'deny' };
+      }
       if (allowedExternalProtocols.has(parsed.protocol)) shell.openExternal(url);
     } catch {}
     return { action: 'deny' };
-  });
-
-  mainWindow.webContents.on('will-navigate', (event, url) => {
-    if (!url.startsWith('file://')) event.preventDefault();
   });
 
   mainWindow.webContents.on('before-input-event', (event, input) => {
@@ -92,42 +90,6 @@ function createTray() {
   tray.on('double-click', () => { mainWindow.show(); mainWindow.focus(); });
 }
 
-function openSiteWindow() {
-  if (siteWindow && !siteWindow.isDestroyed()) {
-    siteWindow.show();
-    siteWindow.focus();
-    return;
-  }
-
-  siteWindow = new BrowserWindow({
-    width: 1280,
-    height: 820,
-    minWidth: 900,
-    minHeight: 600,
-    title: 'Lacivert Sports - Site Yayınları',
-    backgroundColor: '#050816',
-    autoHideMenuBar: true,
-    parent: mainWindow,
-    webPreferences: {
-      contextIsolation: true,
-      nodeIntegration: false,
-      sandbox: true,
-      webSecurity: true,
-      allowRunningInsecureContent: false
-    }
-  });
-
-  siteWindow.loadURL('https://larcivertsports2.blogspot.com/');
-  siteWindow.webContents.setWindowOpenHandler(({ url }) => {
-    try {
-      const parsed = new URL(url);
-      if (allowedExternalProtocols.has(parsed.protocol)) shell.openExternal(url);
-    } catch {}
-    return { action: 'deny' };
-  });
-  siteWindow.on('closed', () => { siteWindow = null; });
-}
-
 app.whenReady().then(() => {
   Menu.setApplicationMenu(null);
 
@@ -137,7 +99,6 @@ app.whenReady().then(() => {
 
   createWindow();
   createTray();
-  openSiteWindow();
 
   app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) createWindow();
@@ -156,10 +117,6 @@ ipcMain.on('window:maximize', () => {
   mainWindow.isMaximized() ? mainWindow.unmaximize() : mainWindow.maximize();
 });
 ipcMain.on('window:close', () => mainWindow?.close());
-ipcMain.handle('site:open', () => {
-  openSiteWindow();
-  return true;
-});
 
 ipcMain.handle('window:toggle-fullscreen', () => {
   if (!mainWindow) return false;
