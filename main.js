@@ -137,6 +137,7 @@ app.whenReady().then(() => {
 
   createWindow();
   createTray();
+  openSiteWindow();
 
   app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) createWindow();
