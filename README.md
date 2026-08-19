@@ -31,4 +31,4 @@ npm run dist
 
 Çıktılar `dist/` klasörüne gelir.
 
-> Yalnızca kullanım/yayın hakkına sahip olduğunuz veya yasal olarak erişilebilir yayın kaynaklarını uygulamaya ekleyin.
+> Larcivert Sports
