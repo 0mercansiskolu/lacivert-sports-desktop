@@ -4,6 +4,7 @@ contextBridge.exposeInMainWorld('desktopAPI', {
   minimize: () => ipcRenderer.send('window:minimize'),
   maximize: () => ipcRenderer.send('window:maximize'),
   close: () => ipcRenderer.send('window:close'),
+  openSite: () => ipcRenderer.invoke('site:open'),
   toggleFullscreen: () => ipcRenderer.invoke('window:toggle-fullscreen'),
   setAlwaysOnTop: (enabled) => ipcRenderer.invoke('window:always-on-top', !!enabled),
   getWindowState: () => ipcRenderer.invoke('window:get-state'),
