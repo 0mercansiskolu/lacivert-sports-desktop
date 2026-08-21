@@ -44,13 +44,6 @@ function createWindow() {
   mainWindow.on('leave-full-screen', sendWindowState);
   mainWindow.on('always-on-top-changed', sendWindowState);
 
-  mainWindow.on('close', (event) => {
-    if (!isQuitting && tray) {
-      event.preventDefault();
-      mainWindow.hide();
-    }
-  });
-
   mainWindow.webContents.setWindowOpenHandler(({ url }) => {
     try {
       const parsed = new URL(url);
