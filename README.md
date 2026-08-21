@@ -13,6 +13,7 @@ Windows 10/11 için Electron tabanlı masaüstü yayın paneli.
 - Sistem tepsisine küçültme
 - Kullanıcının kendi yetkili yayın/oynatıcı bağlantılarını ekleyip silmesi
 - Uygulama başlatıldığında yalnızca Lacivert Sports Blogger sitesini ana pencerede açma
+- Çarpı düğmesine basıldığında uygulamayı ve tüm yayın sesini tamamen kapatma
 - NSIS kurulum ve portable EXE paketleme ayarları
 - contextIsolation + sandbox + preload API güvenlik yapısı
 
