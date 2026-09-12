@@ -1,100 +1,789 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data: https:; style-src 'self' 'unsafe-inline'; script-src 'self'; frame-src https: http:; connect-src 'self' https: http:; media-src 'self' https: http: blob:; font-src 'self' data:;" />
-  <title>Lacivert Sports</title>
-  <link rel="stylesheet" href="./style.css" />
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Lacivert Sports | Profesyonel Yayın Paneli</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+
+:root{
+    --bg:#070707;
+    --panel:rgba(18,18,18,.78);
+    --panel-strong:rgba(22,22,22,.94);
+    --stroke:rgba(255,255,255,.08);
+    --muted:#a3a3a3;
+    --red:#dc2626;
+    --red-soft:#fb7185;
+    --gold:#f59e0b;
+}
+
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+
+body{
+    font-family:'Inter',sans-serif;
+    background:
+        radial-gradient(circle at 12% 6%, rgba(220,38,38,.30), transparent 30%),
+        radial-gradient(circle at 88% 12%, rgba(244,63,94,.12), transparent 34%),
+        linear-gradient(180deg,#050505 0%,#0a0a0a 48%,#030303 100%);
+    color:#fff;
+    min-height:100vh;
+    overflow-x:hidden;
+}
+
+body::before{
+    content:"";
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    background-image:
+        linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px);
+    background-size:64px 64px;
+    mask-image:linear-gradient(to bottom,rgba(0,0,0,.65),transparent 72%);
+    z-index:-1;
+}
+
+/* SPLASH */
+#splash{
+    position:fixed;
+    inset:0;
+    z-index:99999;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex-direction:column;
+    background:
+        radial-gradient(circle at center,rgba(220,38,38,.34),transparent 34%),
+        #050505;
+    transition:.75s ease;
+}
+
+#splash.hide{opacity:0;visibility:hidden}
+
+.logo-box{
+    width:104px;
+    height:104px;
+    border-radius:30px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:linear-gradient(145deg,#dc2626,#050505 72%);
+    border:1px solid rgba(255,255,255,.16);
+    box-shadow:0 28px 90px rgba(220,38,38,.38), inset 0 1px 0 rgba(255,255,255,.2);
+    animation:floatLogo 2.4s ease-in-out infinite;
+}
+
+@keyframes floatLogo{
+    0%,100%{transform:translateY(0)}
+    50%{transform:translateY(-10px)}
+}
+
+.loader{
+    width:230px;
+    height:5px;
+    margin-top:28px;
+    border-radius:999px;
+    background:rgba(148,163,184,.18);
+    overflow:hidden;
+}
+
+.loader span{
+    display:block;
+    width:0%;
+    height:100%;
+    border-radius:inherit;
+    background:linear-gradient(90deg,var(--red),var(--red-soft));
+    animation:load 1.9s forwards;
+}
+
+@keyframes load{to{width:100%}}
+
+/* GLOBAL */
+.glass{
+    background:var(--panel);
+    backdrop-filter:blur(18px);
+    -webkit-backdrop-filter:blur(18px);
+    border:1px solid var(--stroke);
+    box-shadow:0 24px 70px rgba(0,0,0,.22), inset 0 1px 0 rgba(255,255,255,.04);
+}
+
+.badge{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    padding:8px 12px;
+    border-radius:999px;
+    background:rgba(220,38,38,.12);
+    border:1px solid rgba(248,113,113,.18);
+    color:#fecaca;
+    font-size:12px;
+    font-weight:800;
+    letter-spacing:.06em;
+}
+
+.hero-card{
+    position:relative;
+    overflow:hidden;
+    border-radius:34px;
+}
+
+.hero-card::after{
+    content:"";
+    position:absolute;
+    inset:auto -20% -55% -20%;
+    height:220px;
+    background:radial-gradient(circle,rgba(220,38,38,.34),transparent 64%);
+    pointer-events:none;
+}
+
+#video-wrapper{
+    position:relative;
+    border-radius:32px;
+    overflow:hidden;
+    border:1px solid rgba(255,255,255,.12);
+    background:#000;
+    box-shadow:0 35px 100px rgba(0,0,0,.70), 0 0 0 1px rgba(220,38,38,.10);
+}
+
+.video-container{position:relative;padding-bottom:56.25%;height:0}
+.video-container iframe{position:absolute;inset:0;width:100%;height:100%;border:none}
+#video-wrapper:fullscreen{border-radius:0}
+
+.status-card{
+    background:linear-gradient(180deg,rgba(24,24,24,.88),rgba(12,12,12,.62));
+    border:1px solid rgba(255,255,255,.08);
+    border-radius:24px;
+    padding:18px;
+}
+
+.source-chip{
+    display:inline-flex;
+    align-items:center;
+    gap:7px;
+    padding:6px 10px;
+    margin-top:8px;
+    border-radius:999px;
+    font-size:11px;
+    font-weight:900;
+    letter-spacing:.08em;
+    border:1px solid rgba(255,255,255,.08);
+    background:rgba(255,255,255,.05);
+    color:#d4d4d4;
+}
+
+.source-chip.backup{
+    background:rgba(245,158,11,.10);
+    border-color:rgba(245,158,11,.22);
+    color:#fcd34d;
+}
+
+.search-box{position:relative}
+
+.search-box input{
+    width:100%;
+    height:54px;
+    padding:0 20px 0 52px;
+    border-radius:18px;
+    background:rgba(10,10,10,.72);
+    border:1px solid rgba(255,255,255,.09);
+    color:white;
+    outline:none;
+    font-weight:600;
+    transition:.25s ease;
+}
+
+.search-box input:focus{
+    border-color:rgba(248,113,113,.58);
+    box-shadow:0 0 0 4px rgba(239,68,68,.12);
+}
+
+.search-box i{
+    position:absolute;
+    left:20px;
+    top:50%;
+    transform:translateY(-50%);
+    color:#737373;
+}
+
+.channel-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(210px,1fr));
+    gap:16px;
+}
+
+.channel-card{
+    position:relative;
+    overflow:hidden;
+    min-height:112px;
+    padding:18px;
+    border-radius:24px;
+    cursor:pointer;
+    background:linear-gradient(180deg,rgba(24,24,24,.90),rgba(10,10,10,.72));
+    border:1px solid rgba(255,255,255,.07);
+    transition:.28s ease;
+}
+
+.channel-card::after{
+    content:"";
+    position:absolute;
+    right:-38px;
+    top:-38px;
+    width:110px;
+    height:110px;
+    border-radius:50%;
+    background:rgba(220,38,38,.12);
+    transition:.28s ease;
+}
+
+.channel-card:hover{
+    transform:translateY(-5px);
+    border-color:rgba(248,113,113,.42);
+    box-shadow:0 20px 45px rgba(0,0,0,.52);
+}
+
+.channel-card:hover::after{
+    background:rgba(244,63,94,.18);
+    transform:scale(1.12)
+}
+
+.channel-card.active{
+    background:linear-gradient(145deg,rgba(220,38,38,.96),rgba(15,15,15,.94));
+    border-color:rgba(252,165,165,.72);
+    box-shadow:0 26px 70px rgba(220,38,38,.28);
+}
+
+.channel-icon{
+    width:48px;
+    height:48px;
+    border-radius:16px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:rgba(255,255,255,.07);
+    border:1px solid rgba(255,255,255,.08);
+}
+
+@media(max-width:768px){
+    .channel-grid{grid-template-columns:1fr 1fr;gap:12px}
+    .channel-card{padding:14px;min-height:104px;border-radius:20px}
+    #video-wrapper{border-radius:22px}
+}
+
+@media(max-width:460px){
+    .channel-grid{grid-template-columns:1fr}
+}
+</style>
 </head>
+
 <body>
-  <div id="splash" class="splash">
-    <div class="splash-logo">LS</div>
-    <h1>Lacivert <span>Sports</span></h1>
-    <p>WINDOWS BROADCAST CENTER</p>
-    <div class="loader"><i></i></div>
-  </div>
 
-  <header class="titlebar">
-    <div class="drag-region">
-      <div class="app-mark">LS</div>
-      <strong>Lacivert Sports</strong>
-      <span class="desktop-badge">DESKTOP</span>
+<div id="splash">
+    <div class="logo-box">
+        <i class="fas fa-play text-5xl text-white"></i>
     </div>
-    <div class="window-actions">
-      <button id="pinBtn" class="title-btn" title="Her zaman üstte">◎</button>
-      <button id="minBtn" class="title-btn" title="Küçült">—</button>
-      <button id="maxBtn" class="title-btn" title="Büyüt">□</button>
-      <button id="closeBtn" class="title-btn close" title="Kapat">×</button>
+    <h1 class="mt-8 text-4xl font-black tracking-tight">
+        Lacivert<span class="text-red-400">Sports</span>
+    </h1>
+    <p class="mt-3 text-neutral-400 text-xs tracking-[5px] uppercase font-extrabold">
+        Premium Broadcast Center
+    </p>
+    <div class="loader"><span></span></div>
+</div>
+
+<main class="max-w-7xl mx-auto px-4 py-6 md:px-8 md:py-10">
+
+<header class="glass rounded-[34px] p-5 md:p-7 mb-8 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
+    <div class="flex items-center gap-5">
+        <div class="w-16 h-16 rounded-3xl bg-gradient-to-br from-red-600 to-neutral-950 flex items-center justify-center border border-white/10 shadow-xl shadow-red-600/20">
+            <i class="fas fa-bolt text-white text-2xl"></i>
+        </div>
+
+        <div>
+            <div class="badge mb-2">
+                <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+                YAYIN PANELİ AKTİF
+            </div>
+
+            <h1 class="text-3xl md:text-4xl font-black tracking-[-.05em]">
+                Lacivert<span class="text-red-400">Sports</span>
+            </h1>
+
+            <p class="text-neutral-400 text-sm md:text-base font-medium mt-1">
+                Profesyonel spor yayın deneyimi
+            </p>
+        </div>
     </div>
-  </header>
 
-  <main class="shell">
-    <section class="topbar panel">
-      <div class="brand">
-        <div class="brand-logo">▶</div>
+    <div class="grid grid-cols-2 md:flex gap-3">
+        <div class="glass px-5 py-3 rounded-2xl text-sm font-bold flex items-center justify-center">
+            <i class="far fa-clock mr-3 text-red-300"></i>
+            <span id="clock">00:00:00</span>
+        </div>
+
+        <div class="px-5 py-3 rounded-2xl bg-red-500/10 border border-red-500/25 text-red-300 text-sm font-black flex items-center justify-center gap-3">
+            <span class="w-2.5 h-2.5 rounded-full bg-red-500 animate-pulse"></span>
+            CANLI
+        </div>
+    </div>
+</header>
+
+<section class="hero-card glass p-4 md:p-6 mb-8">
+    <div id="video-wrapper">
+        <div class="video-container">
+            <iframe
+                id="main-frame"
+                src=""
+                allowfullscreen
+                allow="autoplay; encrypted-media"
+                referrerpolicy="no-referrer"
+            ></iframe>
+        </div>
+    </div>
+
+    <div class="grid lg:grid-cols-[1fr_auto] gap-4 mt-5 relative z-10">
+        <div class="status-card flex items-center gap-4">
+            <div class="w-14 h-14 rounded-2xl bg-red-500/10 text-red-300 flex items-center justify-center border border-red-400/10">
+                <i class="fas fa-satellite-dish text-xl"></i>
+            </div>
+
+            <div>
+                <p class="text-[11px] tracking-[4px] uppercase text-neutral-500 font-black mb-1">
+                    Şu an oynatılıyor
+                </p>
+
+                <h2 id="now-playing" class="text-2xl md:text-3xl font-black tracking-tight">
+                    Kanal Seçiniz
+                </h2>
+
+                <div id="source-status" class="source-chip">
+                    <i class="fas fa-server"></i>
+                    ANA KAYNAK
+                </div>
+            </div>
+        </div>
+
+        <div class="flex flex-wrap gap-3">
+            <button
+                id="backupBtn"
+                onclick="toggleBackupSource()"
+                class="flex-1 lg:flex-none px-6 py-4 rounded-2xl bg-amber-500/10 hover:bg-amber-500/20 text-amber-300 font-black transition active:scale-95 border border-amber-400/15"
+            >
+                <i class="fas fa-shuffle mr-2"></i>
+                Yedek Yayın
+            </button>
+
+            <button
+                onclick="toggleFullScreen()"
+                class="flex-1 lg:flex-none px-7 py-4 rounded-2xl bg-red-600 hover:bg-red-500 text-white font-black transition active:scale-95 shadow-lg shadow-red-600/20"
+            >
+                <i class="fas fa-expand mr-2"></i>
+                Tam Ekran
+            </button>
+
+            <button
+                onclick="refreshPlayer()"
+                class="px-6 py-4 rounded-2xl bg-neutral-800 hover:bg-neutral-700 text-white font-bold transition active:scale-95 border border-white/5"
+            >
+                <i class="fas fa-rotate-right mr-2"></i>
+                Yenile
+            </button>
+        </div>
+    </div>
+</section>
+
+<section class="glass rounded-[34px] p-5 md:p-7">
+    <div class="flex flex-col xl:flex-row xl:items-end xl:justify-between gap-5 mb-6">
         <div>
-          <div class="online"><i></i> YAYIN PANELİ AKTİF</div>
-          <h1>Lacivert <span>Sports</span></h1>
-          <p>Windows için profesyonel yayın deneyimi</p>
-        </div>
-      </div>
-      <div class="status-actions">
-        <div class="clock-card">◷ <span id="clock">00:00:00</span></div>
-        <div class="live-card"><i></i> CANLI</div>
-      </div>
-    </section>
+            <div class="badge mb-3">
+                <i class="fas fa-layer-group"></i>
+                KANAL LİSTESİ
+            </div>
 
-    <section class="player-panel panel">
-      <div id="videoWrapper" class="video-wrapper">
-        <div class="live-pill">CANLI YAYIN</div>
-        <iframe id="mainFrame" title="Yayın oynatıcı" sandbox="allow-scripts allow-same-origin allow-forms allow-presentation" allow="autoplay; fullscreen; encrypted-media; picture-in-picture" allowfullscreen></iframe>
-        <div id="playerPlaceholder" class="placeholder">
-          <div class="placeholder-icon">▶</div>
-          <strong>Bir kanal seç</strong>
-          <span>Yayın burada açılacak</span>
-        </div>
-      </div>
+            <h3 class="text-2xl md:text-3xl font-black tracking-tight">
+                Yayın Kanalları
+            </h3>
 
-      <div class="player-info-row">
-        <div class="now-playing">
-          <div class="satellite">◉</div>
-          <div><small>ŞU AN OYNATILIYOR</small><h2 id="nowPlaying">Kanal Seçiniz</h2></div>
+            <p class="text-neutral-400 text-sm mt-1">
+                Favori kanalını seç, tek tıkla yayına geç.
+            </p>
         </div>
-        <div class="player-buttons">
-          <button id="siteBroadcastsBtn" class="site-button">◉ Site Yayınları</button>
-          <button id="fullscreenBtn" class="primary">⛶ Tam Ekran <kbd>F11</kbd></button>
-          <button id="refreshBtn">↻ Yenile</button>
-        </div>
-      </div>
-    </section>
 
-    <section class="channels-panel panel">
-      <div class="section-head">
-        <div>
-          <div class="section-badge">▦ KANAL LİSTESİ</div>
-          <h2>Yayın Kanalları</h2>
-          <p>Favori kanalını seç, tek tıkla yayına geç.</p>
-        </div>
-        <div class="filters">
-          <label class="search"><span>⌕</span><input id="searchInput" autocomplete="off" placeholder="Kanal ara..." /></label>
-          <button id="favoritesFilter" class="filter-btn">☆ Favoriler</button>
-          <div class="count"><span id="count">0</span> KANAL</div>
-        </div>
-      </div>
-      <form id="sourceForm" class="source-form">
-        <label><span>Kanal adı</span><input id="channelNameInput" maxlength="60" placeholder="Örn. Resmî canlı yayın" required /></label>
-        <label class="source-url"><span>Yayın / oynatıcı adresi</span><input id="channelUrlInput" type="url" placeholder="https://..." required /></label>
-        <button class="primary" type="submit">＋ Kanal Ekle</button>
-      </form>
-      <p class="legal-note">Yalnızca izleme ve yeniden yayınlama hakkınız bulunan kaynakları ekleyin.</p>
-      <div id="channelGrid" class="channel-grid"></div>
-    </section>
+        <div class="flex flex-col md:flex-row gap-3 md:items-center w-full xl:w-auto">
+            <div class="search-box w-full md:w-96">
+                <i class="fas fa-search"></i>
+                <input type="text" id="searchInput" placeholder="Kanal ara..." />
+            </div>
 
-    <footer>Lacivert Sports © Masaüstü yayın arayüzü · F11: tam ekran · Ctrl+R: yenile</footer>
-  </main>
+            <span class="text-neutral-300 text-sm font-black glass px-5 py-4 rounded-2xl text-center whitespace-nowrap">
+                <span id="count" class="text-red-300"></span>
+                KANAL
+            </span>
+        </div>
+    </div>
 
-  <div id="toast" class="toast" role="status"></div>
-  <script src="./app.js"></script>
+    <div id="channel-grid" class="channel-grid"></div>
+</section>
+
+<footer class="text-center text-neutral-500 text-xs font-semibold py-8">
+    Lacivert Sports © Yayın arayüzü
+</footer>
+
+</main>
+
+<script>
+
+/*
+=========================================================
+YAYIN SUNUCULARI
+=========================================================
+
+Aynı kanal ID'si iki farklı URL üzerinde kullanılabilir.
+
+Örnek:
+Ana   : https://ana-sunucu.example/channel?id=zirve
+Yedek : https://yedek-sunucu.example/channel?id=zirve
+
+Yedek sunucu alanına yalnızca kullanma/yayınlama yetkinizin
+olduğu kaynağı ekleyin.
+*/
+
+const STREAM_SERVERS = {
+    primary: "https://monotv547.com/channel?id=",
+    backup: "https://www.kodamantv21.com/channel?id="
+};
+
+/*
+=========================================================
+KANAL LİSTESİ
+=========================================================
+
+key  = Arayüz içinde benzersiz kanal anahtarı.
+id   = Yayın sunucusuna gönderilen gerçek kanal ID'si.
+name = Ekranda görünen kanal adı.
+
+Aynı id birden fazla sunucuda kullanılabilir.
+Arayüz çakışmalarını önlemek için key benzersizdir.
+*/
+
+const channels = [
+    {key:'tabii1', id:'ex1',      name:'Tabii Spor 1'},
+    {key:'tabii2', id:'ex7',      name:'Tabii Spor 2'},
+    {key:'tabii3', id:'ex3',      name:'Tabii Spor 3'},
+    {key:'tabii4', id:'ex4',      name:'Tabii Spor 4'},
+    {key:'tabii5', id:'ex6',      name:'Tabii Spor 5'},
+
+    {key:'bein1',  id:'zirve',    name:'beIN Sports 1'},
+    {key:'bein2',  id:'b2',       name:'beIN Sports 2'},
+    {key:'bein3',  id:'b3',       name:'beIN Sports 3'},
+    {key:'bein4',  id:'b4',       name:'beIN Sports 4'},
+    {key:'bein5',  id:'b5',       name:'beIN Sports 5'},
+
+    {key:'beinm1', id:'bm1',      name:'beIN Max 1'},
+    {key:'beinm2', id:'bm2',      name:'beIN Max 2'},
+
+    {key:'ssport1',id:'ss',       name:'S Sport 1'},
+    {key:'ssport2',id:'ss2',      name:'S Sport 2'},
+
+    {key:'tivibu1',id:'t1',       name:'Tivibu Spor 1'},
+    {key:'tivibu2',id:'t2',       name:'Tivibu Spor 2'},
+    {key:'tivibu3',id:'t3',       name:'Tivibu Spor 3'},
+
+    {key:'euro1',  id:'eu1',      name:'Eurosport 1'},
+    {key:'trty',   id:'trtspor2', name:'TRT SPOR YILDIZ'},
+    {key:'aspor',  id:'as',       name:'A SPOR'},
+    {key:'trt1',   id:'trt1',     name:'TRT 1'},
+    {key:'atv',    id:'atv',      name:'A TV'},
+    {key:'tv8',    id:'tv8',      name:'TV 8'},
+    {key:'tv85',   id:'tv85',     name:'TV 8.5'},
+    {key:'euro2',  id:'eu2',      name:'Eurosport 2'},
+    {key:'smart1', id:'sm1',      name:'Smart Spor 1'},
+    {key:'smart2', id:'sm2',      name:'Smart Spor 2'}
+];
+
+const grid = document.getElementById("channel-grid");
+const frame = document.getElementById("main-frame");
+const title = document.getElementById("now-playing");
+const count = document.getElementById("count");
+const sourceStatus = document.getElementById("source-status");
+const backupBtn = document.getElementById("backupBtn");
+
+let currentChannel = null;
+let currentSource = "primary";
+
+/*
+=========================================================
+YARDIMCI FONKSİYONLAR
+=========================================================
+*/
+
+function hasBackupServer(){
+    const value = STREAM_SERVERS.backup || "";
+
+    return (
+        value.trim() !== "" &&
+        !value.includes("YOUR-AUTHORIZED-BACKUP")
+    );
+}
+
+function buildStreamUrl(channel, source = "primary"){
+    const base = STREAM_SERVERS[source];
+
+    if(!base){
+        return "";
+    }
+
+    return `${base}${encodeURIComponent(channel.id)}`;
+}
+
+function updateSourceUI(){
+    const isBackup = currentSource === "backup";
+
+    sourceStatus.classList.toggle("backup", isBackup);
+
+    sourceStatus.innerHTML = isBackup
+        ? '<i class="fas fa-shuffle"></i> YEDEK KAYNAK'
+        : '<i class="fas fa-server"></i> ANA KAYNAK';
+
+    backupBtn.innerHTML = isBackup
+        ? '<i class="fas fa-server mr-2"></i> Ana Yayına Dön'
+        : '<i class="fas fa-shuffle mr-2"></i> Yedek Yayın';
+}
+
+/*
+=========================================================
+KANAL KARTLARI
+=========================================================
+*/
+
+function renderChannels(list){
+    grid.innerHTML = "";
+    count.textContent = list.length;
+
+    if(!list.length){
+        grid.innerHTML = `
+            <div class="col-span-full text-center py-12 text-neutral-400 font-semibold">
+                Aradığınız kanal bulunamadı.
+            </div>
+        `;
+        return;
+    }
+
+    list.forEach(channel=>{
+        const card = document.createElement("div");
+
+        card.className = "channel-card";
+        card.id = "btn-" + channel.key;
+
+        card.innerHTML = `
+            <div class="relative z-10 h-full flex flex-col justify-between gap-5">
+                <div class="flex items-center justify-between">
+                    <div class="channel-icon">
+                        <i class="fas fa-play text-red-300"></i>
+                    </div>
+
+                    <span class="text-[10px] px-2.5 py-1 rounded-full bg-emerald-400/10 text-emerald-300 border border-emerald-400/10 font-black tracking-widest">
+                        HD
+                    </span>
+                </div>
+
+                <div>
+                    <div class="font-black text-white tracking-tight">
+                        ${channel.name}
+                    </div>
+
+                    <div class="text-xs text-neutral-400 mt-1 font-semibold">
+                        ID: ${channel.id}
+                    </div>
+                </div>
+            </div>
+        `;
+
+        card.onclick = ()=>playChannel(channel, card);
+
+        grid.appendChild(card);
+    });
+}
+
+/*
+=========================================================
+YAYIN OYNATMA
+=========================================================
+*/
+
+function playChannel(channel, element){
+    currentChannel = channel;
+    currentSource = "primary";
+
+    const url = buildStreamUrl(channel, currentSource);
+
+    if(!url){
+        title.innerText = "Yayın URL'si bulunamadı";
+        return;
+    }
+
+    frame.src = url;
+    title.innerText = channel.name;
+
+    document
+        .querySelectorAll(".channel-card")
+        .forEach(el=>el.classList.remove("active"));
+
+    element.classList.add("active");
+
+    updateSourceUI();
+
+    if(window.innerWidth < 768){
+        document
+            .getElementById("video-wrapper")
+            .scrollIntoView({
+                behavior:"smooth",
+                block:"start"
+            });
+    }
+}
+
+/*
+=========================================================
+ANA / YEDEK KAYNAK GEÇİŞİ
+=========================================================
+*/
+
+function toggleBackupSource(){
+    if(!currentChannel){
+        return;
+    }
+
+    if(currentSource === "primary"){
+        if(!hasBackupServer()){
+            alert(
+                "Yedek yayın sunucusu tanımlanmamış.\n\n" +
+                "STREAM_SERVERS.backup alanına kullanma yetkinizin olduğu " +
+                "yedek sunucunun URL'sini ekleyin."
+            );
+            return;
+        }
+
+        currentSource = "backup";
+    }else{
+        currentSource = "primary";
+    }
+
+    const url = buildStreamUrl(currentChannel, currentSource);
+
+    frame.src = url;
+
+    updateSourceUI();
+}
+
+/*
+=========================================================
+YENİLE
+=========================================================
+*/
+
+function refreshPlayer(){
+    if(!currentChannel){
+        return;
+    }
+
+    const url = buildStreamUrl(currentChannel, currentSource);
+
+    frame.src = "";
+    setTimeout(()=>{
+        frame.src = url;
+    },100);
+}
+
+/*
+=========================================================
+TAM EKRAN
+=========================================================
+*/
+
+function toggleFullScreen(){
+    const wrapper = document.getElementById("video-wrapper");
+
+    if(!document.fullscreenElement){
+        wrapper.requestFullscreen?.();
+
+        if(screen.orientation?.lock){
+            screen.orientation
+                .lock("landscape")
+                .catch(()=>{});
+        }
+    }else{
+        document.exitFullscreen?.();
+    }
+}
+
+/*
+=========================================================
+ARAMA
+=========================================================
+*/
+
+document
+    .getElementById("searchInput")
+    .addEventListener("input",function(){
+
+        const value = this.value
+            .toLowerCase()
+            .trim();
+
+        const filtered = channels.filter(channel =>
+            channel.name.toLowerCase().includes(value) ||
+            channel.id.toLowerCase().includes(value)
+        );
+
+        renderChannels(filtered);
+    });
+
+/*
+=========================================================
+SAAT
+=========================================================
+*/
+
+function updateClock(){
+    document
+        .getElementById("clock")
+        .textContent = new Date().toLocaleTimeString("tr-TR");
+}
+
+setInterval(updateClock,1000);
+updateClock();
+
+/*
+=========================================================
+SAYFA AÇILIŞI
+=========================================================
+*/
+
+window.addEventListener("load",()=>{
+    renderChannels(channels);
+
+    setTimeout(()=>{
+        document
+            .getElementById("splash")
+            .classList.add("hide");
+    },1950);
+
+    setTimeout(()=>{
+        const firstChannel = channels[0];
+
+        document
+            .getElementById("btn-" + firstChannel.key)
+            ?.click();
+    },2050);
+});
+
+</script>
+
 </body>
 </html>

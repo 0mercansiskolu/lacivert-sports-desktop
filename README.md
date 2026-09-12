@@ -3,16 +3,15 @@
 Windows 10/11 için Electron tabanlı masaüstü yayın paneli.
 
 ## Özellikler
-- Çerçevesiz masaüstü pencere ve özel pencere kontrolleri
+- Siyah-kırmızı profesyonel yayın paneli
 - F11 tam ekran
-- Kanal arama
-- Favoriler (yerel olarak saklanır)
-- Son izlenen kanalı hatırlama
-- Yayın yenileme
-- Her zaman üstte modu
+- Kanal adı veya yayın ID'si ile arama
+- Ana ve yedek yayın sunucusu arasında geçiş
+- Aynı kanal ID'sini iki farklı yayın adresinde kullanma
+- Açılışta ilk kanalı otomatik oynatma
+- Yayını yenileme ve tam ekran yatay izleme
 - Sistem tepsisine küçültme
-- Kullanıcının kendi yetkili yayın/oynatıcı bağlantılarını ekleyip silmesi
-- Uygulama başlatıldığında yalnızca Lacivert Sports Blogger sitesini ana pencerede açma
+- Uygulamanın yerel yayın panelini doğrudan açma
 - Çarpı düğmesine basıldığında uygulamayı ve tüm yayın sesini tamamen kapatma
 - NSIS kurulum ve portable EXE paketleme ayarları
 - contextIsolation + sandbox + preload API güvenlik yapısı
@@ -31,3 +30,5 @@ npm run dist
 ```
 
 Çıktılar `dist/` klasörüne gelir.
+
+> Yalnızca kullanım/yayın hakkına sahip olduğunuz veya yasal olarak erişilebilir yayın kaynaklarını uygulamaya ekleyin.

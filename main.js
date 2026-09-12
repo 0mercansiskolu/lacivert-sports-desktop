@@ -22,7 +22,7 @@ function createWindow() {
     height: 900,
     minWidth: 980,
     minHeight: 650,
-    backgroundColor: '#050816',
+    backgroundColor: '#070707',
     title: 'Lacivert Sports',
     frame: true,
     show: false,
@@ -35,7 +35,7 @@ function createWindow() {
     }
   });
 
-  mainWindow.loadURL('https://larcivertsports2.blogspot.com/');
+  mainWindow.loadFile(path.join(__dirname, 'src', 'index.html'));
   mainWindow.once('ready-to-show', () => mainWindow.show());
 
   mainWindow.on('maximize', sendWindowState);
@@ -47,10 +47,6 @@ function createWindow() {
   mainWindow.webContents.setWindowOpenHandler(({ url }) => {
     try {
       const parsed = new URL(url);
-      if (parsed.hostname === 'larcivertsports2.blogspot.com') {
-        mainWindow.loadURL(url);
-        return { action: 'deny' };
-      }
       if (allowedExternalProtocols.has(parsed.protocol)) shell.openExternal(url);
     } catch {}
     return { action: 'deny' };
