@@ -1,34 +1,15 @@
-# Lacivert Sports Desktop
+# Larcivert Sports Browser v0.1.0
 
-Windows 10/11 için Electron tabanlı masaüstü yayın paneli.
+Windows (Electron/Chromium) ve Android (Kotlin/WebView) için başlangıç düzeyinde internet tarayıcısı kaynak kodları.
+
+## Windows
+Windows 10/11 ve Node.js kurulu bilgisayarda `cd desktop`, `npm install`, `npm start` komutlarını çalıştırın. Windows EXE üretimi: `npm run dist:win`.
+
+## Android
+Android Studio ile `android/` klasörünü açın, Android SDK Platform 35 ve JDK 17 kullanın. Gradle senkronizasyonunun ardından Build > Build APK(s) seçeneğini kullanın. Gradle wrapper JAR bu projede bulunmaz.
 
 ## Özellikler
-- Siyah-kırmızı profesyonel yayın paneli
-- F11 tam ekran
-- Kanal adı veya yayın ID'si ile arama
-- Ana ve yedek yayın sunucusu arasında geçiş
-- Aynı kanal ID'sini iki farklı yayın adresinde kullanma
-- Açılışta ilk kanalı otomatik oynatma
-- Yayını yenileme ve tam ekran yatay izleme
-- Sistem tepsisine küçültme
-- Uygulamanın yerel yayın panelini doğrudan açma
-- Çarpı düğmesine basıldığında uygulamayı ve tüm yayın sesini tamamen kapatma
-- NSIS kurulum ve portable EXE paketleme ayarları
-- contextIsolation + sandbox + preload API güvenlik yapısı
+Sekmeli web gezintisi, adres ve arama çubuğu, gezinme kontrolleri, yer imleri, Windows geçmiş kaydı ve temel dosya indirmeleri.
 
-## Geliştirici çalıştırması
-```bash
-npm install
-npm start
-```
-
-## Windows EXE üretme
-Windows üzerinde:
-```bash
-npm install
-npm run dist
-```
-
-Çıktılar `dist/` klasörüne gelir.
-
-> Yalnızca kullanım/yayın hakkına sahip olduğunuz veya yasal olarak erişilebilir yayın kaynaklarını uygulamaya ekleyin.
+## Uyarı
+Bu kod MVP'dir, tamamlanmış bir Chrome alternatifi değildir. Henüz derlenmiş EXE/APK sağlanmıyor. Özel mod, gelişmiş güvenlik denetimleri, kapsamlı testler ve otomatik güncelleme tamamlanmadı. Yerel cihazlarda derleme ve test gereklidir.
